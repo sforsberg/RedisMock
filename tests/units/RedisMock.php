@@ -988,7 +988,7 @@ class RedisMock extends test
                 ->isEmpty();;
     }
 
-    public function testHSetHMSetHGetHDelHExistsHGetAll()
+    public function testHSetHMSetHGetHDelHExistsHKeysHGetAll()
     {
         $redisMock = new Redis();
 
@@ -1017,6 +1017,9 @@ class RedisMock extends test
                 ->isEqualTo(0)
             ->string($redisMock->hget('test', 'test1'))
                 ->isEqualTo('something else')
+            ->array($redisMock->hkeys('test'))
+                ->hasSize(1)
+                ->containsValues(array('test1'))
             ->array($redisMock->hgetall('test'))
                 ->hasSize(1)
                 ->containsValues(array('something else'))
@@ -1053,6 +1056,12 @@ class RedisMock extends test
                 'raoul'  => 'nothing',
             )))
                 ->isEqualTo('OK')
+            ->array($redisMock->hkeys('test'))
+                ->isEqualTo(array(
+                    0 => 'test1',
+                    1 => 'blabla',
+                    2 => 'raoul',
+                ))
             ->array($redisMock->hgetall('test'))
                 ->isEqualTo(array(
                     'test1'  => 'somthing',

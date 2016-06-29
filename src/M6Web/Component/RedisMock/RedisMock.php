@@ -635,6 +635,15 @@ class RedisMock
         }
     }
 
+    public function hkeys($key)
+    {
+        if (!isset(self::$data[$key]) || $this->deleteOnTtlExpired($key)) {
+            return $this->returnPipedInfo(array());
+        }
+
+        return $this->returnPipedInfo(array_keys(self::$data[$key]));
+    }
+
     public function hgetall($key)
     {
         if (!isset(self::$data[$key]) || $this->deleteOnTtlExpired($key)) {
